@@ -176,9 +176,7 @@ function ChatContainer() {
               </div>
             </div>
           )}
-          {messages.map((msg, index) => (
-            <Message key={index} message={msg.text} fromUser={msg.fromUser} />
-          ))}
+
           <div ref={bottomRef} />
         </div>
         {showScrollButton && (
