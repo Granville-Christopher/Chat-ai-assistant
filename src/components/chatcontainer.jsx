@@ -129,14 +129,14 @@ function ChatContainer() {
   };
 
   return (
-    <section>
+    <section className="flex flex-col h-screen">
       <div className="bg-blue-600 fixed z-50 top-0 w-full text-white p-4 text-center text-xl font-semibold">
         Gran AI Chat Assistant
       </div>
-      <div className="min-h-screen">
+      <div className="">
         <div
           ref={chatContentRef}
-          className="flex-1 overflow-y-auto relative mt-16 p-4 my-16 space-y-4"
+          className="flex-1 overflow-y-auto  px-4 pt-20 pb-4 space-y-4"
         >
           {messages.map((msg, index) => (
             <Message key={index} message={msg.text} fromUser={msg.fromUser} />
@@ -152,7 +152,7 @@ function ChatContainer() {
 
         <form
           onSubmit={handleSubmit}
-          className="p-4 bg-white border-t w-full border-gray-200 flex"
+          className="p-4 bg-white border-t border-gray-200 flex"
         >
           <input
             ref={inputRef}
