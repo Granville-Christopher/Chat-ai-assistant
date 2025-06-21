@@ -14,7 +14,7 @@ function ChatContainer() {
         "Failed to load chat history from localStorage on initialization:",
         error
       );
-      localStorage.removeItem(LOCAL_STORAGE_KEY); 
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
       return [];
     }
   });
@@ -129,49 +129,50 @@ function ChatContainer() {
   };
 
   return (
-    <div className="">
+    <section>
       <div className="bg-blue-600 fixed z-50 top-0 w-full text-white p-4 text-center text-xl font-semibold">
         Gran AI Chat Assistant
       </div>
-
-      <div
-        ref={chatContentRef}
-        className="flex-1 overflow-y-auto relative mt-16 p-4 my-16 space-y-4"
-      >
-        {messages.map((msg, index) => (
-          <Message key={index} message={msg.text} fromUser={msg.fromUser} />
-        ))}
-        {isLoading && (
-          <div className="flex justify-start">
-            <div className="bg-gray-200 text-gray-800 max-w-md px-4 py-2 rounded-lg my-2">
-              <span className="animate-pulse">Typing...</span>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <form
-        onSubmit={handleSubmit}
-        className="p-4 bg-white border-t fixed bottom-0 w-full border-gray-200 flex"
-      >
-        <input
-          ref={inputRef}
-          type="text"
-          value={userInput}
-          onChange={(e) => setUserInput(e.target.value)}
-          placeholder="Type your message..."
-          className="flex-1 p-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          disabled={isLoading}
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-6 py-3 rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-          disabled={isLoading || !userInput.trim()}
+      <div className="">
+        <div
+          ref={chatContentRef}
+          className="flex-1 overflow-y-auto relative mt-16 p-4 my-16 space-y-4"
         >
-          Send
-        </button>
-      </form>
-    </div>
+          {messages.map((msg, index) => (
+            <Message key={index} message={msg.text} fromUser={msg.fromUser} />
+          ))}
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="bg-gray-200 text-gray-800 max-w-md px-4 py-2 rounded-lg my-2">
+                <span className="animate-pulse">Typing...</span>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="p-4 bg-white border-t fixed bottom-0 w-full border-gray-200 flex"
+        >
+          <input
+            ref={inputRef}
+            type="text"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            placeholder="Type your message..."
+            className="flex-1 p-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={isLoading}
+          />
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-6 py-3 rounded-r-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isLoading || !userInput.trim()}
+          >
+            Send
+          </button>
+        </form>
+      </div>
+    </section>
   );
 }
 
