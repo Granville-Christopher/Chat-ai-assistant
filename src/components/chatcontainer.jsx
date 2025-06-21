@@ -192,7 +192,7 @@ function ChatContainer() {
 
         <form
           onSubmit={handleSubmit}
-          className="p-4 bg-white border-t sticky bottom-0 w-full border-gray-200 flex"
+          className="p-4 bg-white border-t fixed bottom-10 w-full border-gray-200 flex"
         >
           <input
             ref={inputRef}
