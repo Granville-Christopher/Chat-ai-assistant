@@ -129,7 +129,7 @@ function ChatContainer() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-100">
       <div className="bg-blue-600 text-white p-4 text-center text-xl font-semibold">
         Gran AI Chat Assistant
       </div>
