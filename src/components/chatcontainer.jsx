@@ -136,7 +136,7 @@ function ChatContainer() {
 
       <div
         ref={chatContentRef}
-        className="flex-1 overflow-y-auto mt-16 p-4 mt- space-y-4"
+        className="flex-1 overflow-y-auto mt-16 p-4 my-16 space-y-4"
       >
         {messages.map((msg, index) => (
           <Message key={index} message={msg.text} fromUser={msg.fromUser} />
