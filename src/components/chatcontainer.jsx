@@ -129,7 +129,7 @@ function ChatContainer() {
   };
 
   return (
-    <div className="">
+    <div className="fixed">
       <div className="bg-blue-600 fixed top-0 w-full text-white p-4 text-center text-xl font-semibold">
         Gran AI Chat Assistant
       </div>
