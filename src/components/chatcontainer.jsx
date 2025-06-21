@@ -130,7 +130,7 @@ function ChatContainer() {
         Gran AI Chat Assistant
       </div>
 
-      <div className="flex-grow overflow-hidden pt-16">
+      <div className="flex-grow pt-16">
         <div
           ref={chatContentRef}
           className="grow overflow-y-auto px-4 pb-36 pt-4 space-y-4"
