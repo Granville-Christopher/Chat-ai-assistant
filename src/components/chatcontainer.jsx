@@ -129,7 +129,7 @@ function ChatContainer() {
   };
 
   return (
-    <div className="flex flex-col bg-gray-100">
+    <div className="flex flex-colbg-gray-100">
       <div className="bg-blue-600 text-white p-4 text-center text-xl font-semibold">
         Gran AI Chat Assistant
       </div>
@@ -152,7 +152,7 @@ function ChatContainer() {
 
       <form
         onSubmit={handleSubmit}
-        className="p-4 bg-white border-t border-gray-200 flex"
+        className="p-4 bg-white fixed bottom-0 border-t border-gray-200 flex"
       >
         <input
           ref={inputRef}
