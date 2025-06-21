@@ -22,6 +22,8 @@ function ChatContainer() {
   const [isLoading, setIsLoading] = useState(false);
   const chatContentRef = useRef(null);
   const inputRef = useRef(null);
+  const bottomRef = useRef(null);
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
   const API_KEY = process.env.REACT_APP_CHAT_AI_GEMINI_API_KEY;
 
@@ -68,6 +70,32 @@ function ChatContainer() {
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setShowScrollButton(!entry.isIntersecting);
+      },
+      {
+        root: chatContentRef.current,
+        threshold: 1.0,
+      }
+    );
+
+    if (bottomRef.current) {
+      observer.observe(bottomRef.current);
+    }
+
+    return () => {
+      if (bottomRef.current) {
+        observer.unobserve(bottomRef.current);
+      }
+    };
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   async function generateGeminiResponse(userMessage) {
     if (!model) {
@@ -148,7 +176,19 @@ function ChatContainer() {
               </div>
             </div>
           )}
+          {messages.map((msg, index) => (
+            <Message key={index} message={msg.text} fromUser={msg.fromUser} />
+          ))}
+          <div ref={bottomRef} />
         </div>
+        {showScrollButton && (
+          <button
+            onClick={scrollToBottom}
+            className="fixed bottom-20 right-4 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg animate-bounce"
+          >
+            ↓ New Message
+          </button>
+        )}
 
         <form
           onSubmit={handleSubmit}
