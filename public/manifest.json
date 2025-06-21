@@ -3,17 +3,17 @@
   "name": "Gran Ai",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "https://placehold.co/40x40/fff/3B82F6?text=CA'/>",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "https://placehold.co/40x40/fff/3B82F6?text=CA",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "https://placehold.co/40x40/fff/3B82F6?text=CA",
       "type": "image/png",
       "sizes": "512x512"
     }
