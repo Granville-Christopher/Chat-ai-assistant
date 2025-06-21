@@ -164,7 +164,7 @@ function ChatContainer() {
       <div className="">
         <div
           ref={chatContentRef}
-          className="flex-1 overflow-y-auto  px-4 py-20 space-y-4"
+          className="flex-1 overflow-y-auto px-4 pb-36 pt-20 space-y-4"
         >
           {messages.map((msg, index) => (
             <Message key={index} message={msg.text} fromUser={msg.fromUser} />
@@ -192,7 +192,7 @@ function ChatContainer() {
 
         <form
           onSubmit={handleSubmit}
-          className="p-4 bg-white border-t fixed bottom-0 w-full border-gray-200 flex"
+          className="p-4 bg-white border-t sticky bottom-0 w-full border-gray-200 flex"
         >
           <input
             ref={inputRef}
