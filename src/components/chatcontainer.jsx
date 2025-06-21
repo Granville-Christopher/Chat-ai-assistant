@@ -10,86 +10,67 @@ function ChatContainer() {
       const storedHistory = localStorage.getItem(LOCAL_STORAGE_KEY);
       return storedHistory ? JSON.parse(storedHistory) : [];
     } catch (error) {
-      console.error(
-        "Failed to load chat history from localStorage on initialization:",
-        error
-      );
+      console.error("Failed to load chat history:", error);
       localStorage.removeItem(LOCAL_STORAGE_KEY);
       return [];
     }
   });
+
   const [userInput, setUserInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showScrollButton, setShowScrollButton] = useState(false);
+
   const chatContentRef = useRef(null);
   const inputRef = useRef(null);
   const bottomRef = useRef(null);
-  const [showScrollButton, setShowScrollButton] = useState(false);
 
   const API_KEY = process.env.REACT_APP_CHAT_AI_GEMINI_API_KEY;
 
   const genAI = useMemo(() => {
     if (!API_KEY) {
-      console.error("Missing Gemini API Key. Please set it in your .env file.");
+      console.error("Missing Gemini API Key.");
       return null;
     }
     return new GoogleGenerativeAI(API_KEY);
   }, [API_KEY]);
 
   const model = useMemo(() => {
-    return genAI
-      ? genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
-      : null;
+    return genAI ? genAI.getGenerativeModel({ model: "gemini-1.5-flash" }) : null;
   }, [genAI]);
 
-  useEffect(() => {
-    try {
-      const storedHistory = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (storedHistory) {
-        setMessages(JSON.parse(storedHistory));
-      }
-    } catch (error) {
-      console.error("Failed to load chat history from localStorage:", error);
-      localStorage.removeItem(LOCAL_STORAGE_KEY);
-    }
-  }, []);
-
+  // Save messages
   useEffect(() => {
     try {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));
     } catch (error) {
-      console.error("Failed to save chat history to localStorage:", error);
+      console.error("Failed to save chat history:", error);
     }
   }, [messages]);
 
+  // Auto scroll on new messages
   useEffect(() => {
-    if (chatContentRef.current) {
-      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
-    }
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Focus input
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
+  // Observe bottom visibility
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         setShowScrollButton(!entry.isIntersecting);
       },
-      {
-        root: chatContentRef.current,
-        threshold: 1.0,
-      }
+      { root: null, threshold: 1.0 }
     );
 
-    if (bottomRef.current) {
-      observer.observe(bottomRef.current);
-    }
+    const currentBottomRef = bottomRef.current;
+    if (currentBottomRef) observer.observe(currentBottomRef);
 
     return () => {
-      if (bottomRef.current) {
-        observer.unobserve(bottomRef.current);
-      }
+      if (currentBottomRef) observer.unobserve(currentBottomRef);
     };
   }, [messages]);
 
@@ -98,13 +79,10 @@ function ChatContainer() {
   };
 
   async function generateGeminiResponse(userMessage) {
-    if (!model) {
-      return "AI model not initialized. Please check your API configuration and API key.";
-    }
+    if (!model) return "AI model not initialized. Please check your API key.";
 
     try {
       setIsLoading(true);
-      console.log("Sending prompt to Gemini:", userMessage);
       const chatHistory = messages.map((msg) => ({
         role: msg.fromUser ? "user" : "model",
         parts: [{ text: msg.text }],
@@ -119,21 +97,13 @@ function ChatContainer() {
 
       const result = await chat.sendMessage(userMessage);
       const response = await result.response;
-      const text = response.text();
-
-      console.log("Gemini Response:", text);
-      return text;
+      return response.text();
     } catch (error) {
-      console.error("Error communicating with Gemini API:", error);
-
-      if (error.message.includes("403")) {
-        return "Access denied. Please check your API key or usage limits (403 Forbidden).";
-      } else if (error.message.includes("429")) {
-        return "Too many requests. Please wait a moment and try again (429 Too Many Requests).";
-      } else if (error.message.includes("404")) {
-        return "Model not found or unavailable. Please check the model name or API version (404 Not Found).";
-      }
-      return "There was an unexpected error. Please try again later.";
+      console.error("Gemini error:", error);
+      if (error.message.includes("403")) return "403 Forbidden. Check API key.";
+      if (error.message.includes("429")) return "Too many requests. Try again.";
+      if (error.message.includes("404")) return "Model not found.";
+      return "Unexpected error. Try later.";
     } finally {
       setIsLoading(false);
     }
@@ -141,17 +111,15 @@ function ChatContainer() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     const currentUserMessage = userInput.trim();
-    if (!currentUserMessage) {
-      return;
-    }
+    if (!currentUserMessage) return;
 
     setMessages((prev) => [
       ...prev,
       { text: currentUserMessage, fromUser: true },
     ]);
     setUserInput("");
+
     const botResponse = await generateGeminiResponse(currentUserMessage);
     setMessages((prev) => [...prev, { text: botResponse, fromUser: false }]);
   };
@@ -161,10 +129,11 @@ function ChatContainer() {
       <div className="bg-blue-600 fixed z-50 top-0 w-full text-white p-4 text-center text-xl font-semibold">
         Gran AI Chat Assistant
       </div>
-      <div className="">
+
+      <div className="flex-grow overflow-hidden pt-16">
         <div
           ref={chatContentRef}
-          className="flex-1 overflow-y-auto px-4 pb-36 pt-20 space-y-4"
+          className="grow overflow-y-auto px-4 pb-36 pt-4 space-y-4"
         >
           {messages.map((msg, index) => (
             <Message key={index} message={msg.text} fromUser={msg.fromUser} />
@@ -176,13 +145,13 @@ function ChatContainer() {
               </div>
             </div>
           )}
-
           <div ref={bottomRef} />
         </div>
+
         {showScrollButton && (
           <button
             onClick={scrollToBottom}
-            className="fixed bottom-20 my-20 right-4 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg animate-bounce"
+            className="fixed bottom-24 right-4 bg-blue-600 text-white px-4 py-2 rounded-full shadow-lg animate-bounce z-50"
           >
             ↓ New Message
           </button>
