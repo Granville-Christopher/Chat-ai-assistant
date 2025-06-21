@@ -129,14 +129,14 @@ function ChatContainer() {
   };
 
   return (
-    <div className="bg-gray-100">
+    <div className="">
       <div className="bg-blue-600 fixed top-0 w-full text-white p-4 text-center text-xl font-semibold">
         Gran AI Chat Assistant
       </div>
 
       <div
         ref={chatContentRef}
-        className="flex-1 overflow-y-auto p-4 space-y-4"
+        className="flex-1 overflow-y-auto mt-16 p-4 mt- space-y-4"
       >
         {messages.map((msg, index) => (
           <Message key={index} message={msg.text} fromUser={msg.fromUser} />
