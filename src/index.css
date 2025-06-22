@@ -11,10 +11,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-/* src/index.css or src/App.css */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* Your other custom CSS can go below these directives */

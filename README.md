@@ -10,6 +10,7 @@ Gran AI is a React-based chat assistant application that leverages Google's Gemi
 - Rich markdown support in messages using `react-markdown` and `remark-gfm`
 - Responsive design with Tailwind CSS styling
 - User-friendly input with loading indicators during AI response generation
+- Offline support and caching via a registered service worker
 
 ## Technologies Used
 
@@ -20,6 +21,7 @@ Gran AI is a React-based chat assistant application that leverages Google's Gemi
 - Axios for HTTP requests
 - FontAwesome for icons
 - dotenv for environment variable management
+- Service Worker for offline caching
 
 ## Getting Started
 
@@ -70,14 +72,15 @@ Open your browser and navigate to `http://localhost:3000` to use the chat assist
 - Press "Send" or hit Enter to submit your message.
 - The AI will respond using the Gemini generative model.
 - Chat history is saved locally and will persist across sessions.
+- The app supports offline usage through a service worker that caches static assets.
 
 ## Project Structure
 
 - `src/` - React source code
   - `components/` - React components including `ChatContainer` and `Message`
   - `App.js` - Main app component rendering the chat container
-  - `index.js` - Entry point
-- `public/` - Static assets and HTML template
+  - `index.js` - Entry point with service worker registration
+- `public/` - Static assets, HTML template, and service worker script
 - `tailwind.config.js` - Tailwind CSS configuration
 - `.env` - Environment variables (not committed)
 
@@ -86,6 +89,7 @@ Open your browser and navigate to `http://localhost:3000` to use the chat assist
 - Ensure your Gemini API key has appropriate permissions and usage limits.
 - The app handles common API errors such as rate limiting and access denial gracefully.
 - Styling is done with Tailwind CSS; you can customize the theme in `tailwind.config.js`.
+- The service worker enables offline caching but may require a page refresh after updates.
 
 ## License
 

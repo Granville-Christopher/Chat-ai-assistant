@@ -1,5 +1,5 @@
 import React from 'react';
-import './index.css'; // Make sure your main CSS (with Tailwind directives) is imported here
+import './index.css';
 import ChatContainer from './components/chatcontainer';
 
 function App() {
