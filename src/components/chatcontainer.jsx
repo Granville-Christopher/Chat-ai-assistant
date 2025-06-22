@@ -152,7 +152,7 @@ function ChatContainer() {
 
   return (
     <section
-      className={`flex flex-col h-screen space-y-4 ${
+      className={`flex flex-col overflow-x-hidden h-screen space-y-4 ${
         darkMode ? "bg-gray-900 text-white" : "bg-white text-black"
       }`}
     >
