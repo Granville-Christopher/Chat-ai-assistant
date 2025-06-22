@@ -78,7 +78,7 @@ function Message({ message, fromUser, darkMode }) {
                 </pre>
               ) : (
                 <code
-                  className="bg-gray-300 text-gray-900 px-1 py-0.5 rounded text-sm font-mono break-words"
+                  className="bg-gray-300 text-gray-900 py-0.5 rounded text-sm font-mono break-words"
                   {...props}
                 >
                   {children}
