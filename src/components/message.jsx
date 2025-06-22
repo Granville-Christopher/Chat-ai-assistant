@@ -4,13 +4,12 @@ import remarkGfm from "remark-gfm";
 
 function Message({ message, fromUser, darkMode }) {
   const messageClasses = [
-    "max-w-md",
     "break-words",
     "px-4",
     "py-2",
     "rounded-lg",
     fromUser
-      ? "bg-gray-300 text-gray-900 ml-auto mr-2  max-w-[66.666667%]"
+      ? "bg-gray-300 text-gray-900 ml-12 mr-2 max-w-2/3"
       : darkMode
       ? "bg-transparent text-gray-100 mr-auto"
       : "bg-transparent text-gray-900 mr-auto",
