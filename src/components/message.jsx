@@ -10,7 +10,7 @@ function Message({ message, fromUser, darkMode }) {
     "py-2",
     "rounded-lg",
     fromUser
-      ? "bg-gray-300 text-gray-900 ml-auto mr-2 w-2/3"
+      ? "bg-gray-300 text-gray-900 ml-auto mr-2 max-w-2/3"
       : darkMode
       ? "bg-transparent text-gray-100 mr-auto"
       : "bg-transparent text-gray-900 mr-auto",
