@@ -35,7 +35,9 @@ function ChatContainer() {
   }, [API_KEY]);
 
   const model = useMemo(() => {
-    return genAI ? genAI.getGenerativeModel({ model: "gemini-1.5-flash" }) : null;
+    return genAI
+      ? genAI.getGenerativeModel({ model: "gemini-1.5-flash" })
+      : null;
   }, [genAI]);
 
   // Save messages
@@ -77,6 +79,8 @@ function ChatContainer() {
   const scrollToBottom = () => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const [darkMode, setDarkMode] = useState(false);
 
   async function generateGeminiResponse(userMessage) {
     if (!model) return "AI model not initialized. Please check your API key.";
@@ -125,9 +129,16 @@ function ChatContainer() {
   };
 
   return (
-    <section className="flex flex-col h-screen">
-      <div className="bg-blue-600 fixed z-50 top-0 w-full text-white p-4 text-center text-xl font-semibold">
+    <section className={`flex flex-col h-screen space-y-4 ${darkMode ? "bg-gray-900 text-white" : "bg-white text-black"}`}
+>
+      <div className="bg-blue-600 fixed z-50 top-0 w-full text-white p-4 text-center text-xl font-semibold flex items-center justify-center">
         Gran AI Chat Assistant
+        <button
+          onClick={() => setDarkMode((prev) => !prev)}
+          className="ml-4 bg-white text-blue-600 px-3 py-1 rounded text-sm shadow"
+        >
+          {darkMode ? "Light Mode" : "Dark Mode"}
+        </button>
       </div>
 
       <div className="flex-grow pt-16">
