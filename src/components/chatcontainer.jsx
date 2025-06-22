@@ -148,15 +148,16 @@ function ChatContainer() {
         <div
           ref={chatContentRef}
           className={`grow overflow-y-auto px-4 pb-24 pt-4 space-y-4 ${
-            darkMode ? "bg-gray-900 text-white" : "bg-white text-black"
+            darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"
           }`}
         >
           {messages.map((msg, index) => (
-            <Message key={index} message={msg.text} fromUser={msg.fromUser} />
+            <Message key={index} message={msg.text} fromUser={msg.fromUser} darkMode={darkMode} />
+
           ))}
           {isLoading && (
             <div className="flex justify-start">
-              <div className="bg-gray-200 text-gray-800 max-w-md px-4 py-2 rounded-lg my-2">
+              <div className=" max-w-md px-4 py-2 rounded-lg my-2">
                 <span className="animate-pulse">Typing...</span>
               </div>
             </div>
