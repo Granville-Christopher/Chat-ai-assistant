@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import Message from "./message";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 
 const LOCAL_STORAGE_KEY = "geminiChatHistory";
 
@@ -19,11 +21,11 @@ function ChatContainer() {
   const [userInput, setUserInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
-
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const chatContentRef = useRef(null);
   const inputRef = useRef(null);
   const bottomRef = useRef(null);
-
+  const sidebarRef = useRef(null);
   const API_KEY = process.env.REACT_APP_CHAT_AI_GEMINI_API_KEY;
 
   const genAI = useMemo(() => {
@@ -40,7 +42,6 @@ function ChatContainer() {
       : null;
   }, [genAI]);
 
-  // Save messages
   useEffect(() => {
     try {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(messages));
@@ -49,17 +50,14 @@ function ChatContainer() {
     }
   }, [messages]);
 
-  // Auto scroll on new messages
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Focus input
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
-  // Observe bottom visibility
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -81,6 +79,30 @@ function ChatContainer() {
   };
 
   const [darkMode, setDarkMode] = useState(false);
+
+  const clearChat = () => {
+    localStorage.removeItem("geminiChatHistory");
+    setMessages([]);
+    setSidebarOpen(false);
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setSidebarOpen(false);
+      }
+    }
+
+    if (sidebarOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [sidebarOpen]);
 
   async function generateGeminiResponse(userMessage) {
     if (!model) return "AI model not initialized. Please check your API key.";
@@ -134,8 +156,32 @@ function ChatContainer() {
         darkMode ? "bg-gray-900 text-white" : "bg-white text-black"
       }`}
     >
-      <div className="bg-blue-600 fixed z-50 top-0 w-full text-white p-4 text-center text-xl font-semibold flex items-center justify-center">
-        Gran AI Chat Assistant
+      <div className="bg-blue-600 flex justify-between items-center fixed z-50 top-0 w-full text-white p-4 text-xl font-semibold">
+        <div className="relative">
+          <button
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="text-white text-lg focus:outline-none"
+          >
+            <FontAwesomeIcon icon={faEllipsis} />
+          </button>
+
+          {sidebarOpen && (
+            <div
+              ref={sidebarRef}
+              className="absolute top-10 left-0 bg-white text-black text-sm rounded shadow-md p-2 z-50"
+            >
+              <button
+                onClick={clearChat}
+                className="hover:bg-gray-100 whitespace-nowrap px-2 py-1 w-full text-left"
+              >
+                Clear Chat
+              </button>
+            </div>
+          )}
+        </div>
+
+        <span>Gran AI</span>
+
         <button
           onClick={() => setDarkMode((prev) => !prev)}
           className="ml-4 bg-white text-blue-600 px-3 py-1 rounded text-sm shadow"
@@ -147,17 +193,21 @@ function ChatContainer() {
       <div className="flex-grow pt-16">
         <div
           ref={chatContentRef}
-          className={`grow overflow-y-auto px-4 pb-24 pt-4 space-y-4 ${
+          className={`grow overflow-y-auto pb-24 px-4 pt-4 space-y-4 ${
             darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"
           }`}
         >
           {messages.map((msg, index) => (
-            <Message key={index} message={msg.text} fromUser={msg.fromUser} darkMode={darkMode} />
-
+            <Message
+              key={index}
+              message={msg.text}
+              fromUser={msg.fromUser}
+              darkMode={darkMode}
+            />
           ))}
           {isLoading && (
             <div className="flex justify-start">
-              <div className=" max-w-md px-4 py-2 rounded-lg my-2">
+              <div className=" max-w-md py-2 rounded-lg my-2">
                 <span className="animate-pulse">Typing...</span>
               </div>
             </div>
@@ -184,7 +234,7 @@ function ChatContainer() {
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             placeholder="Type your message..."
-            className="flex-1 p-3 border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-1 text-gray-900 p-3 font-semibold border border-gray-300 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             disabled={isLoading}
           />
           <button
