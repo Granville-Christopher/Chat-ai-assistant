@@ -152,7 +152,7 @@ function ChatContainer() {
 
   return (
     <section
-      className={`flex flex-col overflow-x-hidden fixed h-screen space-y-4 ${
+      className={`flex flex-col overflow-x-hidden fixed w-full h-screen space-y-4 ${
         darkMode ? "bg-gray-900 text-white" : "bg-white text-black"
       }`}
     >
@@ -207,7 +207,7 @@ function ChatContainer() {
           ))}
           {isLoading && (
             <div className="flex justify-start">
-              <div className=" max-w-md py-2 rounded-lg my-2">
+              <div className=" max-w-md py-2 px-2 rounded-lg my-2">
                 <span className="animate-pulse">Typing...</span>
               </div>
             </div>
