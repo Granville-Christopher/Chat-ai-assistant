@@ -129,8 +129,11 @@ function ChatContainer() {
   };
 
   return (
-    <section className={`flex flex-col h-screen space-y-4 ${darkMode ? "bg-gray-900 text-white" : "bg-white text-black"}`}
->
+    <section
+      className={`flex flex-col h-screen space-y-4 ${
+        darkMode ? "bg-gray-900 text-white" : "bg-white text-black"
+      }`}
+    >
       <div className="bg-blue-600 fixed z-50 top-0 w-full text-white p-4 text-center text-xl font-semibold flex items-center justify-center">
         Gran AI Chat Assistant
         <button
@@ -144,7 +147,9 @@ function ChatContainer() {
       <div className="flex-grow pt-16">
         <div
           ref={chatContentRef}
-          className="grow overflow-y-auto px-4 pb-24 pt-4 space-y-4"
+          className={`grow overflow-y-auto px-4 pb-24 pt-4 space-y-4 ${
+            darkMode ? "bg-gray-900 text-white" : "bg-white text-black"
+          }`}
         >
           {messages.map((msg, index) => (
             <Message key={index} message={msg.text} fromUser={msg.fromUser} />
