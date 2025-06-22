@@ -133,7 +133,7 @@ function ChatContainer() {
       <div className="flex-grow pt-16">
         <div
           ref={chatContentRef}
-          className="grow overflow-y-auto px-4 pb-2 pt-4 space-y-4"
+          className="grow overflow-y-auto px-4 pb-24 pt-4 space-y-4"
         >
           {messages.map((msg, index) => (
             <Message key={index} message={msg.text} fromUser={msg.fromUser} />
