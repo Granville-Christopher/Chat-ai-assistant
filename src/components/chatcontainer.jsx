@@ -193,7 +193,7 @@ function ChatContainer() {
       <div className="flex-grow pt-16 whitespace-pre-wrap">
         <div
           ref={chatContentRef}
-          className={`grow overflow-y-auto pb-24  px-4 pt-4 space-y-4 ${
+          className={`grow overflow-y-auto pb-24 pt-4 space-y-4 ${
             darkMode ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"
           }`}
         >
